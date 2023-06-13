@@ -14,7 +14,7 @@ ORDER BY totalsales DESC
 
 Answer:
 
-Of the top 10 cities with the highest transaction revenues, 9 are American. The only non-American city is at fifth place: Tel Aviv, Israel.
+Of the 8 cities with transaction revenues with the site, 9 are American. The only non-American city is at fifth place: Tel Aviv, Israel.
 The city with the most sales, San Francisco, has a wide lead over the city with the second most sales, Sunnyvale.
 
 **Question 2: What is the average number of products ordered from visitors in each city and country?**
@@ -71,11 +71,20 @@ Answer:
 
 SQL Queries:
 
-
+SELECT a.country, a.city, SUM(a.totaltransactionrevenue) AS totalsales, 
+SUM(a.totaltransactionrevenue)*100 / (
+	 SELECT SUM(a1.totaltransactionrevenue) 
+	 FROM all_sessions AS a1 
+	 WHERE a1.totaltransactionrevenue > 0 AND city != 'Unavailable'
+) AS percentoftotal
+FROM all_sessions AS a
+WHERE a.city != 'Unavailable' AND a.totaltransactionrevenue > 0
+GROUP BY a.country, a.city
+ORDER BY totalsales DESC
 
 Answer:
 
-
+Revenue from San Francisco makes up 19.1% of the total. Sunnyvale and Atlanta follow behind at just over 10% each, and the remaining cities make up less than 10% each. Zurich, Switzerland has the smallest share, at just 0.2%.
 
 
 
