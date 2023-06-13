@@ -14,7 +14,7 @@ ORDER BY totalsales DESC
 
 Answer:
 
-Of the 8 cities with transaction revenues with the site, 9 are American. The only non-American city is at fifth place: Tel Aviv, Israel.
+Of the 10 cities with the most transaction revenues, 9 are American. The only non-American city is at fifth place: Tel Aviv, Israel.
 The city with the most sales, San Francisco, has a wide lead over the city with the second most sales, Sunnyvale.
 
 **Question 2: What is the average number of products ordered from visitors in each city and country?**
@@ -59,11 +59,26 @@ Canada follows the US in terms of category diversity.
 
 SQL Queries:
 
-
+SELECT country, city, productname, sales
+FROM (
+  SELECT a1.country country,
+		 a1.city city,
+		 a1.v2productname productname,
+		 MAX(a1.country),
+         SUM(an.units_sold) sales,
+         ROW_NUMBER() OVER (PARTITION BY MAX(a1.city) ORDER BY SUM(an.units_sold) DESC) rn
+  FROM all_sessions a1 INNER JOIN analytics AS an
+  ON a1.visitid = an.visitid
+  GROUP BY a1.country, a1.city, a1.v2productname
+) t
+WHERE rn = 1 AND sales > 0 AND city != 'Unavailable'
+ORDER BY sales DESC;
 
 Answer:
 
-
+The top selling product in Mountain View was the Grip Highlighter Pen 3 Pack, with 50 units sold. Next in terms of quantity was 44 SPF-15 Slim & Slender Lip Balm ordered for Sunnyvale.
+Chicago is tied in third place with San Francisco with 8 units ordered of their most popular products. Despite not having a single product selling over 8 units in San Francisco, it is
+still the city with the plurality of transaction revenue.
 
 
 
