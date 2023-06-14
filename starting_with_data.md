@@ -40,11 +40,17 @@ Visitid 1495994469 had the single largest transaction with the purchase of 5 Nes
 
 
 Question 4: 
+What products have an ordered quantity greater than the stock level in the products table?
 
 SQL Queries:
 
-Answer:
+SELECT * 
+FROM products 
+WHERE orderedquantity > stocklevel
+ORDER BY orderedquantity DESC
 
+Answer:
+15 different products have a greater amount ordered than in stock. Kick Ball is the product with the largest discrepancy, with 15,170 ordered and just 723 in stock.
 
 
 Question 5: 
