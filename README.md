@@ -8,7 +8,112 @@ valid data is left over to be properly analyzed. Some columns with just a few no
 ## Process
 
 1.
-I first imported the data for the tables, starting with all_sessions.
+I first imported the data for the tables with the following queries:
+CREATE TABLE all_sessions (
+ 	revisedvisitid SERIAL,
+ 	fullVisitorId NUMERIC,
+ 	channelGrouping VARCHAR(255),
+ 	time NUMERIC,  
+ 	country VARCHAR(255),  
+ 	city VARCHAR(255),  
+ 	totalTransactionRevenue NUMERIC,
+ 	transactions INT,
+ 	timeOnSite INT,
+ 	pageviews INT,
+ 	sessionQualityDim INT,
+ 	date DATE,
+ 	visitId INT,
+ 	type VARCHAR (255),
+ 	productRefundAmount VARCHAR (255),
+ 	productQuantity INT,
+ 	productPrice NUMERIC,
+ 	productRevenue NUMERIC,
+ 	productSKU VARCHAR (255),
+ 	v2ProductName VARCHAR (255),
+ 	v2ProductCategory VARCHAR (255),
+	productVariant VARCHAR (255),
+	currencyCode VARCHAR (255),
+ 	itemQuantity INT,
+	itemRevenue NUMERIC,
+ 	transactionRevenue NUMERIC,
+ 	transactionId VARCHAR (255),
+ 	pageTitle VARCHAR (1000),
+ 	searchKeyword VARCHAR (255),
+ 	pagePathLevel1 VARCHAR (255),
+ 	eCommerceAction_type INT,
+ 	eCommerceAction_step INT,
+ 	eCommerceAction_option VARCHAR (255),
+     PRIMARY KEY (revisedvisitid)
+ );
+COPY all_sessions
+FROM 'Z:/all_sessions.csv'
+DELIMITER ','
+CSV HEADER;
+
+CREATE TABLE analytics (
+	viewid SERIAL,
+ 	visitNumber INT,
+	visitID INT, 
+ 	visitStartTime INT,
+	date date,
+ 	fullvisitorID NUMERIC,
+ 	userid INT,
+	channelGrouping VARCHAR,
+	socialEngagementType VARCHAR,
+ 	units_sold INT,
+	pageview INT,
+  timeonsite INT,
+ 	bounces INT,
+ 	revenue NUMERIC,
+ 	unit_price NUMERIC,
+    PRIMARY KEY (viewid)
+);
+COPY analytics
+FROM 'Z:/analytics.csv'
+DELIMITER ','
+CSV HEADER;
+
+CREATE TABLE products (
+ SKU VARCHAR,
+ name VARCHAR,
+ orderedQuantity INT, 
+ stockLevel INT,
+ restockingLeadTime INT,
+ sentimentScore NUMERIC,
+ sentimentMagnitude NUMERIC,
+ PRIMARY KEY (SKU)
+);
+COPY products
+FROM 'Z:/products.csv'
+DELIMITER ','
+CSV HEADER;
+
+CREATE TABLE sales_by_sku (
+SKU VARCHAR,
+total_ordered INT,
+PRIMARY KEY (SKU)
+);
+COPY sales_by_sku 
+FROM 'Z:/sales_by_sku.csv'
+DELIMITER ','
+CSV HEADER;
+
+CREATE TABLE sales_report (
+  SKU VARCHAR,
+ 	total_ordered INT,
+ 	name VARCHAR,
+ 	stockLevel INT,
+ 	restockeLeadTime INT,
+ 	sentimentScore NUMERIC,
+ 	sentimentMagnitude NUMERIC,
+ 	ratio NUMERIC,
+ PRIMARY KEY (SKU)
+);
+COPY sales_report
+FROM 'Z:/sales_report.csv'
+DELIMITER ','
+CSV HEADER;
+
 2.
 Next I entered some general queries just to take a look at how the data is structured in the tables, and how each column relates to the others.
 3.
